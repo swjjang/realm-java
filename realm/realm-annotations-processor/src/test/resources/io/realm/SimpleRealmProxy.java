@@ -281,14 +281,17 @@ public class SimpleRealmProxy extends some.test.Simple
         RealmObjectProxy cachedRealmObject = cache.get(newObject);
         if (cachedRealmObject != null) {
             return (some.test.Simple) cachedRealmObject;
-        } else {
-            // rejecting default values to avoid creating unexpected objects from RealmModel/RealmList fields.
-            some.test.Simple realmObject = realm.createObjectInternal(some.test.Simple.class, false, Collections.<String>emptyList());
-            cache.put(newObject, (RealmObjectProxy) realmObject);
-            ((SimpleRealmProxyInterface) realmObject).realmSet$name(((SimpleRealmProxyInterface) newObject).realmGet$name());
-            ((SimpleRealmProxyInterface) realmObject).realmSet$age(((SimpleRealmProxyInterface) newObject).realmGet$age());
-            return realmObject;
         }
+        // rejecting default values to avoid creating unexpected objects from RealmModel/RealmList fields.
+        some.test.Simple realmObject = realm.createObjectInternal(some.test.Simple.class, false, Collections.<String>emptyList());
+        cache.put(newObject, (RealmObjectProxy) realmObject);
+
+        SimpleRealmProxyInterface realmObjectSource = (SimpleRealmProxyInterface) newObject;
+        SimpleRealmProxyInterface realmObjectCopy = (SimpleRealmProxyInterface) realmObject;
+
+        realmObjectCopy.realmSet$name(realmObjectSource.realmGet$name());
+        realmObjectCopy.realmSet$age(realmObjectSource.realmGet$age());
+        return realmObject;
     }
 
     public static long insert(Realm realm, some.test.Simple object, Map<RealmModel,Long> cache) {

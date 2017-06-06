@@ -373,16 +373,20 @@ public class BooleansRealmProxy extends some.test.Booleans
         RealmObjectProxy cachedRealmObject = cache.get(newObject);
         if (cachedRealmObject != null) {
             return (some.test.Booleans) cachedRealmObject;
-        } else {
-            // rejecting default values to avoid creating unexpected objects from RealmModel/RealmList fields.
-            some.test.Booleans realmObject = realm.createObjectInternal(some.test.Booleans.class, false, Collections.<String>emptyList());
-            cache.put(newObject, (RealmObjectProxy) realmObject);
-            ((BooleansRealmProxyInterface) realmObject).realmSet$done(((BooleansRealmProxyInterface) newObject).realmGet$done());
-            ((BooleansRealmProxyInterface) realmObject).realmSet$isReady(((BooleansRealmProxyInterface) newObject).realmGet$isReady());
-            ((BooleansRealmProxyInterface) realmObject).realmSet$mCompleted(((BooleansRealmProxyInterface) newObject).realmGet$mCompleted());
-            ((BooleansRealmProxyInterface) realmObject).realmSet$anotherBoolean(((BooleansRealmProxyInterface) newObject).realmGet$anotherBoolean());
-            return realmObject;
         }
+
+        // rejecting default values to avoid creating unexpected objects from RealmModel/RealmList fields.
+        some.test.Booleans realmObject = realm.createObjectInternal(some.test.Booleans.class, false, Collections.<String>emptyList());
+        cache.put(newObject, (RealmObjectProxy) realmObject);
+
+        BooleansRealmProxyInterface realmObjectSource = (BooleansRealmProxyInterface) newObject;
+        BooleansRealmProxyInterface realmObjectCopy = (BooleansRealmProxyInterface) realmObject;
+
+        realmObjectCopy.realmSet$done(realmObjectSource.realmGet$done());
+        realmObjectCopy.realmSet$isReady(realmObjectSource.realmGet$isReady());
+        realmObjectCopy.realmSet$mCompleted(realmObjectSource.realmGet$mCompleted());
+        realmObjectCopy.realmSet$anotherBoolean(realmObjectSource.realmGet$anotherBoolean());
+        return realmObject;
     }
 
     public static long insert(Realm realm, some.test.Booleans object, Map<RealmModel,Long> cache) {

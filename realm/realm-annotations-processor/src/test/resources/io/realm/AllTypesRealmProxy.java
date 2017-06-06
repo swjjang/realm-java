@@ -15,7 +15,6 @@ import io.realm.internal.SharedRealm;
 import io.realm.internal.Table;
 import io.realm.internal.UncheckedRow;
 import io.realm.internal.android.JsonUtils;
-import io.realm.internal.datatypes.realminteger.ManagedRealmInteger;
 import io.realm.log.RealmLog;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -292,8 +291,7 @@ public class AllTypesRealmProxy extends some.test.AllTypes
     public RealmInteger realmGet$columnCounter() {
         proxyState.getRealm$realm().checkIfValid();
         if (columnCounterRealmInteger == null) {
-            final BaseRealm realm = proxyState.getRealm$realm();
-            columnCounterRealmInteger = new ManagedRealmInteger(new ManagedRealmInteger.Environment() { @Override public boolean isInTransaction() { return realm.isInTransaction(); } });
+            columnCounterRealmInteger = RealmInteger.managedRealmInteger(proxyState, columnInfo.columnCounterIndex);
         }
         return columnCounterRealmInteger;
     }
@@ -863,46 +861,52 @@ public class AllTypesRealmProxy extends some.test.AllTypes
         RealmObjectProxy cachedRealmObject = cache.get(newObject);
         if (cachedRealmObject != null) {
             return (some.test.AllTypes) cachedRealmObject;
-        } else {
-            // rejecting default values to avoid creating unexpected objects from RealmModel/RealmList fields.
-            some.test.AllTypes realmObject = realm.createObjectInternal(some.test.AllTypes.class, ((AllTypesRealmProxyInterface) newObject).realmGet$columnString(), false, Collections.<String>emptyList());
-            cache.put(newObject, (RealmObjectProxy) realmObject);
-            ((AllTypesRealmProxyInterface) realmObject).realmSet$columnLong(((AllTypesRealmProxyInterface) newObject).realmGet$columnLong());
-            ((AllTypesRealmProxyInterface) realmObject).realmSet$columnFloat(((AllTypesRealmProxyInterface) newObject).realmGet$columnFloat());
-            ((AllTypesRealmProxyInterface) realmObject).realmSet$columnDouble(((AllTypesRealmProxyInterface) newObject).realmGet$columnDouble());
-            ((AllTypesRealmProxyInterface) realmObject).realmSet$columnBoolean(((AllTypesRealmProxyInterface) newObject).realmGet$columnBoolean());
-            ((AllTypesRealmProxyInterface) realmObject).realmSet$columnDate(((AllTypesRealmProxyInterface) newObject).realmGet$columnDate());
-            ((AllTypesRealmProxyInterface) realmObject).realmSet$columnBinary(((AllTypesRealmProxyInterface) newObject).realmGet$columnBinary());
-            ((AllTypesRealmProxyInterface) realmObject).realmSet$columnCounter(((AllTypesRealmProxyInterface) newObject).realmGet$columnCounter());
-
-            some.test.AllTypes columnObjectObj = ((AllTypesRealmProxyInterface) newObject).realmGet$columnObject();
-            if (columnObjectObj != null) {
-                some.test.AllTypes cachecolumnObject = (some.test.AllTypes) cache.get(columnObjectObj);
-                if (cachecolumnObject != null) {
-                    ((AllTypesRealmProxyInterface) realmObject).realmSet$columnObject(cachecolumnObject);
-                } else {
-                    ((AllTypesRealmProxyInterface) realmObject).realmSet$columnObject(AllTypesRealmProxy.copyOrUpdate(realm, columnObjectObj, update, cache));
-                }
-            } else {
-                ((AllTypesRealmProxyInterface) realmObject).realmSet$columnObject(null);
-            }
-
-            RealmList<some.test.AllTypes> columnRealmListList = ((AllTypesRealmProxyInterface) newObject).realmGet$columnRealmList();
-            if (columnRealmListList != null) {
-                RealmList<some.test.AllTypes> columnRealmListRealmList = ((AllTypesRealmProxyInterface) realmObject).realmGet$columnRealmList();
-                for (int i = 0; i < columnRealmListList.size(); i++) {
-                    some.test.AllTypes columnRealmListItem = columnRealmListList.get(i);
-                    some.test.AllTypes cachecolumnRealmList = (some.test.AllTypes) cache.get(columnRealmListItem);
-                    if (cachecolumnRealmList != null) {
-                        columnRealmListRealmList.add(cachecolumnRealmList);
-                    } else {
-                        columnRealmListRealmList.add(AllTypesRealmProxy.copyOrUpdate(realm, columnRealmListList.get(i), update, cache));
-                    }
-                }
-            }
-
-            return realmObject;
         }
+
+        // rejecting default values to avoid creating unexpected objects from RealmModel/RealmList fields.
+        some.test.AllTypes realmObject = realm.createObjectInternal(some.test.AllTypes.class, ((AllTypesRealmProxyInterface) newObject).realmGet$columnString(), false, Collections.<String>emptyList());
+        cache.put(newObject, (RealmObjectProxy) realmObject);
+
+        AllTypesRealmProxyInterface realmObjectSource = (AllTypesRealmProxyInterface) newObject;
+        AllTypesRealmProxyInterface realmObjectCopy = (AllTypesRealmProxyInterface) realmObject;
+        ProxyState<some.test.AllTypes> proxyState = ((RealmObjectProxy) realmObject).realmGet$proxyState();
+
+        realmObjectCopy.realmSet$columnLong(realmObjectSource.realmGet$columnLong());
+        realmObjectCopy.realmSet$columnFloat(realmObjectSource.realmGet$columnFloat());
+        realmObjectCopy.realmSet$columnDouble(realmObjectSource.realmGet$columnDouble());
+        realmObjectCopy.realmSet$columnBoolean(realmObjectSource.realmGet$columnBoolean());
+        realmObjectCopy.realmSet$columnDate(realmObjectSource.realmGet$columnDate());
+        realmObjectCopy.realmSet$columnBinary(realmObjectSource.realmGet$columnBinary());
+
+        realmObjectCopy.realmGet$columnCounter().set(realmObjectSource.realmGet$columnCounter().longValue());
+
+        some.test.AllTypes columnObjectObj = realmObjectSource.realmGet$columnObject();
+        if (columnObjectObj == null) {
+            realmObjectCopy.realmSet$columnObject(null);
+        } else {
+            some.test.AllTypes cachecolumnObject = (some.test.AllTypes) cache.get(columnObjectObj);
+            if (cachecolumnObject != null) {
+                realmObjectCopy.realmSet$columnObject(cachecolumnObject);
+            } else {
+                realmObjectCopy.realmSet$columnObject(AllTypesRealmProxy.copyOrUpdate(realm, columnObjectObj, update, cache));
+            }
+        }
+
+        RealmList<some.test.AllTypes> columnRealmListList = realmObjectSource.realmGet$columnRealmList();
+        if (columnRealmListList != null) {
+            RealmList<some.test.AllTypes> columnRealmListRealmList = realmObjectSource.realmGet$columnRealmList();
+            for (int i = 0; i < columnRealmListList.size(); i++) {
+                some.test.AllTypes columnRealmListItem = columnRealmListList.get(i);
+                some.test.AllTypes cachecolumnRealmList = (some.test.AllTypes) cache.get(columnRealmListItem);
+                if (cachecolumnRealmList != null) {
+                    columnRealmListRealmList.add(cachecolumnRealmList);
+                } else {
+                    columnRealmListRealmList.add(AllTypesRealmProxy.copyOrUpdate(realm, columnRealmListList.get(i), update, cache));
+                }
+            }
+        }
+
+        return realmObject;
     }
 
     public static long insert(Realm realm, some.test.AllTypes object, Map<RealmModel,Long> cache) {

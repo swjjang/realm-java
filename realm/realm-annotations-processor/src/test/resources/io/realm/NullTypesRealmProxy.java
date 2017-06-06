@@ -1,6 +1,5 @@
 package io.realm;
 
-
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.util.JsonReader;
@@ -1448,44 +1447,48 @@ public class NullTypesRealmProxy extends some.test.NullTypes
         RealmObjectProxy cachedRealmObject = cache.get(newObject);
         if (cachedRealmObject != null) {
             return (some.test.NullTypes) cachedRealmObject;
-        } else {
-            // rejecting default values to avoid creating unexpected objects from RealmModel/RealmList fields.
-            some.test.NullTypes realmObject = realm.createObjectInternal(some.test.NullTypes.class, false, Collections.<String>emptyList());
-            cache.put(newObject, (RealmObjectProxy) realmObject);
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldStringNotNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldStringNotNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldStringNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldStringNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldBooleanNotNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldBooleanNotNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldBooleanNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldBooleanNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldBytesNotNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldBytesNotNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldBytesNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldBytesNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldByteNotNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldByteNotNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldByteNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldByteNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldShortNotNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldShortNotNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldShortNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldShortNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldIntegerNotNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldIntegerNotNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldIntegerNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldIntegerNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldLongNotNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldLongNotNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldLongNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldLongNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldFloatNotNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldFloatNotNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldFloatNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldFloatNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldDoubleNotNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldDoubleNotNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldDoubleNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldDoubleNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldDateNotNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldDateNotNull());
-            ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldDateNull(((NullTypesRealmProxyInterface) newObject).realmGet$fieldDateNull());
-
-            some.test.NullTypes fieldObjectNullObj = ((NullTypesRealmProxyInterface) newObject).realmGet$fieldObjectNull();
-            if (fieldObjectNullObj != null) {
-                some.test.NullTypes cachefieldObjectNull = (some.test.NullTypes) cache.get(fieldObjectNullObj);
-                if (cachefieldObjectNull != null) {
-                    ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldObjectNull(cachefieldObjectNull);
-                } else {
-                    ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldObjectNull(NullTypesRealmProxy.copyOrUpdate(realm, fieldObjectNullObj, update, cache));
-                }
-            } else {
-                ((NullTypesRealmProxyInterface) realmObject).realmSet$fieldObjectNull(null);
-            }
-            return realmObject;
         }
+
+        // rejecting default values to avoid creating unexpected objects from RealmModel/RealmList fields.
+        some.test.NullTypes realmObject = realm.createObjectInternal(some.test.NullTypes.class, false, Collections.<String>emptyList());
+        cache.put(newObject, (RealmObjectProxy) realmObject);
+
+        NullTypesRealmProxyInterface realmObjectSource = (NullTypesRealmProxyInterface) newObject;
+        NullTypesRealmProxyInterface realmObjectCopy = (NullTypesRealmProxyInterface) realmObject;
+
+        realmObjectCopy.realmSet$fieldStringNotNull(realmObjectSource.realmGet$fieldStringNotNull());
+        realmObjectCopy.realmSet$fieldStringNull(realmObjectSource.realmGet$fieldStringNull());
+        realmObjectCopy.realmSet$fieldBooleanNotNull(realmObjectSource.realmGet$fieldBooleanNotNull());
+        realmObjectCopy.realmSet$fieldBooleanNull(realmObjectSource.realmGet$fieldBooleanNull());
+        realmObjectCopy.realmSet$fieldBytesNotNull(realmObjectSource.realmGet$fieldBytesNotNull());
+        realmObjectCopy.realmSet$fieldBytesNull(realmObjectSource.realmGet$fieldBytesNull());
+        realmObjectCopy.realmSet$fieldByteNotNull(realmObjectSource.realmGet$fieldByteNotNull());
+        realmObjectCopy.realmSet$fieldByteNull(realmObjectSource.realmGet$fieldByteNull());
+        realmObjectCopy.realmSet$fieldShortNotNull(realmObjectSource.realmGet$fieldShortNotNull());
+        realmObjectCopy.realmSet$fieldShortNull(realmObjectSource.realmGet$fieldShortNull());
+        realmObjectCopy.realmSet$fieldIntegerNotNull(realmObjectSource.realmGet$fieldIntegerNotNull());
+        realmObjectCopy.realmSet$fieldIntegerNull(realmObjectSource.realmGet$fieldIntegerNull());
+        realmObjectCopy.realmSet$fieldLongNotNull(realmObjectSource.realmGet$fieldLongNotNull());
+        realmObjectCopy.realmSet$fieldLongNull(realmObjectSource.realmGet$fieldLongNull());
+        realmObjectCopy.realmSet$fieldFloatNotNull(realmObjectSource.realmGet$fieldFloatNotNull());
+        realmObjectCopy.realmSet$fieldFloatNull(realmObjectSource.realmGet$fieldFloatNull());
+        realmObjectCopy.realmSet$fieldDoubleNotNull(realmObjectSource.realmGet$fieldDoubleNotNull());
+        realmObjectCopy.realmSet$fieldDoubleNull(realmObjectSource.realmGet$fieldDoubleNull());
+        realmObjectCopy.realmSet$fieldDateNotNull(realmObjectSource.realmGet$fieldDateNotNull());
+        realmObjectCopy.realmSet$fieldDateNull(realmObjectSource.realmGet$fieldDateNull());
+
+        some.test.NullTypes fieldObjectNullObj = realmObjectSource.realmGet$fieldObjectNull();
+        if (fieldObjectNullObj == null) {
+            realmObjectCopy.realmSet$fieldObjectNull(null);
+        } else {
+            some.test.NullTypes cachefieldObjectNull = (some.test.NullTypes) cache.get(fieldObjectNullObj);
+            if (cachefieldObjectNull != null) {
+                realmObjectCopy.realmSet$fieldObjectNull(cachefieldObjectNull);
+            } else {
+                realmObjectCopy.realmSet$fieldObjectNull(NullTypesRealmProxy.copyOrUpdate(realm, fieldObjectNullObj, update, cache));
+            }
+        }
+        return realmObject;
     }
 
     public static long insert(Realm realm, some.test.NullTypes object, Map<RealmModel,Long> cache) {
